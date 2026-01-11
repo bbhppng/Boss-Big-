@@ -374,15 +374,15 @@ GameObject:
   - component: {fileID: 401561994}
   - component: {fileID: 401561992}
   - component: {fileID: 401561991}
-  - component: {fileID: 401561990}
-  - component: {fileID: 401561989}
-  - component: {fileID: 401561988}
-  - component: {fileID: 401561995}
   - component: {fileID: 401561996}
-  - component: {fileID: 401561997}
-  - component: {fileID: 401561998}
-  - component: {fileID: 401561999}
+  - component: {fileID: 401562004}
+  - component: {fileID: 401562003}
+  - component: {fileID: 401562002}
+  - component: {fileID: 401562001}
   - component: {fileID: 401562000}
+  - component: {fileID: 401561999}
+  - component: {fileID: 401561998}
+  - component: {fileID: 401561997}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -390,49 +390,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &401561988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401561987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 968424bd947164a4c8d2e5b0a18e0230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Move
-  _maxSpeed: 4
-  _maxAcceleration: 35
-  _maxAirAcceleration: 20
-  visualRoot: {fileID: 462021031}
-  _isFacingRight: 0
-  _direction: {x: 0, y: 0}
---- !u!114 &401561989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401561987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 299f76137b9848047975115b493dad2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CollisionDataRetriever
---- !u!114 &401561990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401561987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4d05cd52ea6cfb4893b7561fe469f08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Controlls
-  input: {fileID: 11400000, guid: c43343641b914ad4b8510c921e2a1f77, type: 2}
 --- !u!61 &401561991
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -522,24 +479,6 @@ Transform:
   - {fileID: 462021031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &401561995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401561987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4574127761ced8540ae1f8fc433edd66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Jump
-  _jumpHeight: 3
-  _maxAirJumps: 0
-  _downwardMovementMultiplier: 3
-  _upwardMovementMultiplier: 1.7
-  _coyoteTime: 0.2
-  _jumpBufferTime: 0.2
 --- !u!68 &401561996
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -592,22 +531,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 401561987}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2f9ad31fa302bd42a576607e867d38f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Attack
-  _collider: {fileID: 1672954086}
-  _activeTime: 0.12
-  _coolDown: 0.25
-  _damage: 50
---- !u!114 &401561998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401561987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a19d443948b02a498435d97061d5248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Force
@@ -619,10 +542,10 @@ MonoBehaviour:
   _maxDistance: 9
   _maxPullForce: 40
   _endDistance: 0.5
-  _snapDistance: 0.1
+  _snapDistance: 1
   _coolDown: 2
   _snapSpeed: 25
---- !u!114 &401561999
+--- !u!114 &401561998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -639,7 +562,41 @@ MonoBehaviour:
     m_Bits: 1024
   _groundCheckDistance: 0.1
   _skinWidth: 0.05
+--- !u!114 &401561999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401561987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2f9ad31fa302bd42a576607e867d38f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Attack
+  _collider: {fileID: 1672954086}
+  _activeTime: 0.12
+  _coolDown: 0.2
+  _damage: 50
 --- !u!114 &401562000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401561987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4574127761ced8540ae1f8fc433edd66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jump
+  _jumpHeight: 3
+  _maxAirJumps: 0
+  _downwardMovementMultiplier: 3
+  _upwardMovementMultiplier: 1.7
+  _coyoteTime: 0.2
+  _jumpBufferTime: 0.2
+--- !u!114 &401562001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -656,6 +613,49 @@ MonoBehaviour:
   _wallJumpClimb: {x: 4, y: 12}
   _wallJumpBounce: {x: 10.7, y: 10}
   _wallJumpLeap: {x: 14, y: 12}
+--- !u!114 &401562002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401561987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 968424bd947164a4c8d2e5b0a18e0230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Move
+  _maxSpeed: 4
+  _maxAcceleration: 35
+  _maxAirAcceleration: 20
+  visualRoot: {fileID: 462021031}
+  _isFacingRight: 0
+  _direction: {x: 0, y: 0}
+--- !u!114 &401562003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401561987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299f76137b9848047975115b493dad2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollisionDataRetriever
+--- !u!114 &401562004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401561987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d05cd52ea6cfb4893b7561fe469f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Controlls
+  input: {fileID: 11400000, guid: c43343641b914ad4b8510c921e2a1f77, type: 2}
 --- !u!1 &462021030
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,7 +1349,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -3887782371920749848, guid: fbe390e55cd4449458bf8072bc871a8a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8490566, g: 0.53266287, b: 0.53266287, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
