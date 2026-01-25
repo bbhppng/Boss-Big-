@@ -14,6 +14,7 @@ public class Boss : MonoBehaviour
     public Animator _animator;
     public LayerMask _forceLayer;
     public int _originalLayer;
+    public bool _isFacingRight;
     
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class Boss : MonoBehaviour
         _originalLayer = gameObject.layer;
         _stateMachine = new BossStateMachine();
         _stateMachine.Initialize(new BossMove(this));
+        _isFacingRight = visualRoot.localRotation.eulerAngles.y == 0;
     }
     
     void Start()
@@ -45,6 +47,7 @@ public class Boss : MonoBehaviour
 
     void FixedUpdate()
     {
+        _stateMachine.FixedUpdate();
         Vector2 toTarget = (Vector2)(_player.position - transform.position);
         float yDistance = toTarget.y;
         float distance = toTarget.magnitude;
@@ -74,5 +77,13 @@ public class Boss : MonoBehaviour
             _health.OnHealthChanged -= OnBossHealthChanged;
             _health.OnDeath -= OnBossDeath;
         }
+    }
+    
+    public void Flip()
+    {
+        _isFacingRight = !_isFacingRight;
+        visualRoot.localRotation = _isFacingRight
+            ? Quaternion.identity
+            : Quaternion.Euler(0, 180f, 0);
     }
 }

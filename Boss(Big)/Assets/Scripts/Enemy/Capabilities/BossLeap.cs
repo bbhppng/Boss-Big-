@@ -8,12 +8,7 @@ public class BossLeap : BossState
     private float _leapTimer;
     private bool _isLeaping;
     private PlatformNode _targetPlatform;
-    private bool _isFacingRight;
-
-    public BossLeap(Boss boss) : base(boss)
-    {
-        _isFacingRight = boss.visualRoot.localRotation.eulerAngles.y == 0;
-    }
+    public BossLeap(Boss boss) : base(boss) { }
 
     public override void Enter()
     {
@@ -102,8 +97,8 @@ public class BossLeap : BossState
             // Face the direction of movement
             if (velocity.x != 0)
             {
-                if(_isFacingRight && velocity.x < 0) Flip();
-                else if (!_isFacingRight && velocity.x > 0) Flip();
+                if(boss._isFacingRight && velocity.x < 0) boss.Flip();
+                else if (!boss._isFacingRight && velocity.x > 0) boss.Flip();
             }
         }
     }
@@ -114,7 +109,7 @@ public class BossLeap : BossState
         float displacementY = target.y - start.y;
         float displacementX = target.x - start.x;
 
-        // CRITICAL: Ensure arcHeight is above the target
+        // Ensure arcHeight is above the target
         float requiredHeight = Mathf.Max(arcHeight, displacementY + 0.5f);
     
         // Calculate time to reach apex
@@ -122,7 +117,7 @@ public class BossLeap : BossState
 
         // Calculate descent time
         float descentHeight = requiredHeight - displacementY;
-        if (descentHeight < 0) descentHeight = 0.1f; // Safety clamp
+        if (descentHeight < 0) descentHeight = 0.1f; 
     
         float timeToDescend = Mathf.Sqrt(2f * descentHeight / gravity);
         float totalTime = timeToApex + timeToDescend;
@@ -136,13 +131,5 @@ public class BossLeap : BossState
         );
 
         return velocity;
-    }
-    
-    private void Flip()
-    {
-        _isFacingRight = !_isFacingRight;
-        boss.visualRoot.localRotation = _isFacingRight
-            ? Quaternion.identity
-            : Quaternion.Euler(0, 180f, 0);
     }
 }

@@ -12,11 +12,9 @@ public class BossMove : BossState
     private float _maxSpeedChange;
     private float _acceleration;
     private bool _onGround;
-    private bool _isFacingRight;
 
     public BossMove(Boss boss) : base(boss)
     {
-        _isFacingRight = boss.visualRoot.localRotation.eulerAngles.y == 0;
     }
 
     public override void Enter()
@@ -74,21 +72,13 @@ public class BossMove : BossState
     {
         float velocityX = boss._rb.linearVelocity.x;
         
-        if (_isFacingRight && velocityX < -0.1f)
+        if (boss._isFacingRight && velocityX < -0.1f)
         {
-            Flip();
+            boss.Flip();
         }
-        else if (!_isFacingRight && velocityX > 0.1f)
+        else if (!boss._isFacingRight && velocityX > 0.1f)
         {
-            Flip();
+            boss.Flip();
         }
-    }
-    
-    private void Flip()
-    {
-        _isFacingRight = !_isFacingRight;
-        boss.visualRoot.localRotation = _isFacingRight
-            ? Quaternion.identity
-            : Quaternion.Euler(0, 180f, 0);
     }
 }

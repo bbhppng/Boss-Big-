@@ -4,7 +4,7 @@ public class BossStateMachine : MonoBehaviour
 {
     public BossState CurrentState { get; private set; }
     private float _lastStateChangeTime;
-    private float _minTimeBetweenChanges = 3f;
+    private float _minTimeBetweenChanges = 0.1f;
     
     public void Initialize(BossState initialState)
     {
@@ -17,6 +17,7 @@ public class BossStateMachine : MonoBehaviour
     {
         if (Time.time - _lastStateChangeTime < _minTimeBetweenChanges)
         {
+            Debug.LogWarning($"State change blocked: {CurrentState?.GetType().Name} -> {newState.GetType().Name}");
             return;
         }
         
@@ -30,6 +31,10 @@ public class BossStateMachine : MonoBehaviour
     public void Update()
     {
         CurrentState?.Update();
+    }
+    
+    public void FixedUpdate()
+    {
         CurrentState?.FixedUpdate();
     }
 }
