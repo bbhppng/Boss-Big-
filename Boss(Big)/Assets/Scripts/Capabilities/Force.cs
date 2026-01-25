@@ -19,9 +19,13 @@ public class Force : MonoBehaviour
     
     [Header("Snap tuning")]
     [SerializeField] float _snapSpeed = 25f;
+    
+    [Header("Camera")] 
+    [SerializeField] private float _cameraShakeIntensity = 0.1f;
 
     private Rigidbody2D _rb;
     private Controlls _controller;
+    private CameraShake _cameraShake;
 
     private bool _heroPullRequested;
     private bool _huzzPullRequested;
@@ -44,6 +48,7 @@ public class Force : MonoBehaviour
         _controller = GetComponent<Controlls>();
         _rb = GetComponent<Rigidbody2D>();
         _forceLayer = LayerMask.NameToLayer("Force");
+        _cameraShake = GetComponent<CameraShake>();
     }
 
     private void Update()
@@ -112,7 +117,7 @@ public class Force : MonoBehaviour
         t *= t;
         
         Vector2 force = toTarget.normalized * (_maxPullForce * t);
-        rb.AddForce(force, ForceMode2D.Impulse);
+        rb.AddForce(force, ForceMode2D.Force);
     }
 
     private void BeginHeroPull()
@@ -160,6 +165,7 @@ public class Force : MonoBehaviour
         
         _pulledOriginalLayer = _pulledRb.gameObject.layer;
         _pulledRb.gameObject.layer = _forceLayer;
+        _cameraShake.ShakeCamera( _cameraShakeIntensity);
         
         _isPulling = true;
     }
@@ -173,6 +179,7 @@ public class Force : MonoBehaviour
     
     private void FinishPull()
     {
+        _cameraShake.ResetCamera();
         _pulledRb.gameObject.layer = _pulledOriginalLayer;
         _timer = 0f;
 
