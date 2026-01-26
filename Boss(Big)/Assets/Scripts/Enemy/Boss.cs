@@ -6,6 +6,7 @@ public class Boss : MonoBehaviour
     public BossStateMachine _stateMachine;
     public Transform _player;
     public Rigidbody2D _rb;
+    public PolygonCollider2D _attackBox;
     public CollisionDataRetriever _collisionDataRetriever;
     private Health _health;
     public FindTheBestPlatform _platformFinder;

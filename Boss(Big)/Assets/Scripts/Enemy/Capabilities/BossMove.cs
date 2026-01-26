@@ -5,7 +5,7 @@ public class BossMove : BossState
     [SerializeField] private float _maxSpeed = 8f;
     [SerializeField] private float _maxAcceleration = 35f;
     [SerializeField] private float _maxAirAcceleration = 20f;
-    [SerializeField] private float _stopDistance = 3f;
+    [SerializeField] private float _stopDistance = 4f;
     
     private Vector2 _velocity;
     private Vector2 _desiredVelocity;
@@ -52,6 +52,7 @@ public class BossMove : BossState
         if (distance <= _stopDistance)
         {
             _desiredVelocity = Vector2.zero;
+            boss._stateMachine.ChangeState(new BossFire(boss));
         }
         else
         {

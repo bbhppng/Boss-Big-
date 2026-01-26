@@ -1672,6 +1672,7 @@ MonoBehaviour:
   _stateMachine: {fileID: 0}
   _player: {fileID: 401561994}
   _rb: {fileID: 1107391842}
+  _attackBox: {fileID: 0}
   _collisionDataRetriever: {fileID: 1107391843}
   _platformFinder: {fileID: 0}
   _animator: {fileID: 133740193}
@@ -1778,8 +1779,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FindTheBestPlatform
   _platforms:
-  - {fileID: 1627997299}
-  - {fileID: 2058426815}
+  - {fileID: 1627997303}
+  - {fileID: 2058426819}
   - {fileID: 710644436}
   - {fileID: 2129443323}
   - {fileID: 625151030}
