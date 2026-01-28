@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Force : MonoBehaviour
 {
@@ -15,13 +16,16 @@ public class Force : MonoBehaviour
     [SerializeField] private float _maxPullForce = 40f;   
     [SerializeField] private float _endDistance = 0.5f;    
     [SerializeField] private float _snapDistance = 1f;    
-    [SerializeField] private float _coolDown = 2f; 
+    [SerializeField] private float _coolDown = 5f; 
     
     [Header("Snap tuning")]
     [SerializeField] float _snapSpeed = 25f;
     
     [Header("Camera")] 
     [SerializeField] private float _cameraShakeIntensity = 0.1f;
+    
+    [Header("Cooldown UI")]
+    [SerializeField] private Image _coolDownFill;
 
     private Rigidbody2D _rb;
     private Controlls _controller;
@@ -42,24 +46,32 @@ public class Force : MonoBehaviour
     private int _pulledOriginalLayer;
 
     private float _timer;
+    private float _nextReadyTime;
 
     private void Awake()
     {
+        
         _controller = GetComponent<Controlls>();
         _rb = GetComponent<Rigidbody2D>();
         _forceLayer = LayerMask.NameToLayer("Force");
         _cameraShake = GetComponent<CameraShake>();
+        _nextReadyTime = Time.time;
+        if (_coolDownFill != null)
+            _coolDownFill.fillAmount = 1f;
     }
 
     private void Update()
     {
+        
         _heroPullRequested = _controller.input.RetrieveHeroPullInput();
         _huzzPullRequested = _controller.input.RetrieveHuzzPullInput();
         
+        UpdateCooldownUI();
+
         if (_isPulling || _isSnapping)
             return;
 
-        if (_timer < _coolDown)
+        if (Time.time < _nextReadyTime)
             return;
 
         if (_heroPullRequested)
@@ -70,8 +82,6 @@ public class Force : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _timer += Time.fixedDeltaTime;
-
         if (_isPulling)
         {
             Vector2 toTarget = (Vector2)_pullToward.position - _pulledRb.position;
@@ -107,6 +117,16 @@ public class Force : MonoBehaviour
                 FinishPull();
             }
         }
+    }
+    
+    private void UpdateCooldownUI()
+    {
+        if (_coolDownFill == null)
+            return;
+
+        float remaining = Mathf.Max(0f, _nextReadyTime - Time.time);
+        float fill = 1f - (remaining / _coolDown);
+        _coolDownFill.fillAmount = fill;
     }
 
     private void ApplyPullForce(Rigidbody2D rb, Vector2 toTarget, float distance)
@@ -181,7 +201,7 @@ public class Force : MonoBehaviour
     {
         _cameraShake.ResetCamera();
         _pulledRb.gameObject.layer = _pulledOriginalLayer;
-        _timer = 0f;
+        _nextReadyTime = Time.time + _coolDown;
 
         _pulledRb = null;
         _pullToward = null;

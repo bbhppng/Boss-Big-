@@ -74,7 +74,7 @@ public class BossLeap : BossState
             {
                 _isLeaping = false;
                 boss._animator.SetBool("isFalling", false);
-                boss._stateMachine.ChangeState(new BossMove(boss));
+                boss._stateMachine.ChangeState(new BossIdle(boss, 0.15f));
             }
         }
     }

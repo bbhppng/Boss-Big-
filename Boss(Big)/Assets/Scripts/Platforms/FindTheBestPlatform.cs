@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FindTheBestPlatform : MonoBehaviour
 {
-    [SerializeField] private List<PlatformNode> _platforms = new List<PlatformNode>();
+    [SerializeField] public List<PlatformNode> _platforms = new List<PlatformNode>();
     [SerializeField] private Transform _player;
     [SerializeField] private float _maxJumpDistance = 3f;
     

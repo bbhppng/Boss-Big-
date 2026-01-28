@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
     [SerializeField] public Transform visualRoot;
+    public GameObject _projectilePrefab;
+    public Transform _firePoint;
     public BossStateMachine _stateMachine;
     public Transform _player;
     public Rigidbody2D _rb;
@@ -16,6 +19,9 @@ public class Boss : MonoBehaviour
     public LayerMask _forceLayer;
     public int _originalLayer;
     public bool _isFacingRight;
+    public LayerMask _targetLayers;
+    public LayerMask _obstacleLayers;
+    private Dictionary<System.Type, float> _stateCooldowns = new Dictionary<System.Type, float>();
     
     private void Awake()
     {
@@ -86,5 +92,28 @@ public class Boss : MonoBehaviour
         visualRoot.localRotation = _isFacingRight
             ? Quaternion.identity
             : Quaternion.Euler(0, 180f, 0);
+    }
+    
+    public bool IsStateOnCooldown(System.Type stateType, float cooldownDuration)
+    {
+        if (_stateCooldowns.TryGetValue(stateType, out float lastUsedTime))
+        {
+            return Time.time - lastUsedTime < cooldownDuration;
+        }
+        return false;
+    }
+    
+    public void SetStateCooldown(System.Type stateType)
+    {
+        _stateCooldowns[stateType] = Time.time;
+    }
+    
+    public float GetTimeSinceState(System.Type stateType)
+    {
+        if (_stateCooldowns.TryGetValue(stateType, out float lastUsedTime))
+        {
+            return Time.time - lastUsedTime;
+        }
+        return float.MaxValue;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : InputController
 {
     private PlayerInputActions _inputActions;
-    private bool _isJumping, _isAttacking, _isInteracting, _isPullingHero, _isPullingHuzz;
+    private bool _isJumping, _isAttacking, _isInteracting, _isPullingHero, _isPullingHuzz, _isBlocking, _isRequestingHeal;
     
     private void OnEnable()
     {
@@ -22,6 +22,10 @@ public class PlayerController : InputController
         _inputActions.Player.HeroPull.canceled += HeroPullCanceled;
         _inputActions.Player.HuzzPull.started += HuzzPullStarted;
         _inputActions.Player.HuzzPull.canceled += HuzzPullCanceled;
+        _inputActions.Player.Block.started += BlockStarted;
+        _inputActions.Player.Block.canceled += BlockCanceled;
+        _inputActions.Player.Heal.started += HealStarted;
+        _inputActions.Player.Heal.canceled += HealCanceled;
     }
 
     private void OnDisable()
@@ -37,7 +41,27 @@ public class PlayerController : InputController
         _inputActions.Player.HeroPull.canceled -= HeroPullCanceled;
         _inputActions.Player.HuzzPull.started -= HuzzPullStarted;
         _inputActions.Player.HuzzPull.canceled -= HuzzPullCanceled;
+        _inputActions.Player.Block.started -= BlockStarted;
+        _inputActions.Player.Block.canceled -= BlockCanceled;
+        _inputActions.Player.Heal.started -= HealStarted;
+        _inputActions.Player.Heal.canceled -= HealCanceled;
         _inputActions = null;
+    }
+    private void HealStarted(InputAction.CallbackContext obj)
+    {
+        _isRequestingHeal = true;
+    }
+    private void HealCanceled(InputAction.CallbackContext obj)
+    {
+        _isRequestingHeal = false;
+    }
+    private void BlockStarted(InputAction.CallbackContext obj)
+    {
+        _isBlocking = true;
+    }
+    private void BlockCanceled(InputAction.CallbackContext obj)
+    {
+        _isBlocking = false;
     }
 
     private void HuzzPullStarted(InputAction.CallbackContext obj)
@@ -114,5 +138,14 @@ public class PlayerController : InputController
     public override bool RetrieveHuzzPullInput()
     {
         return _isPullingHuzz;
+    }
+
+    public override bool RetrieveBlockInput()
+    {
+        return _isBlocking;
+    }
+    public override bool RetrieveHealInput()
+    {
+        return _isRequestingHeal;
     }
 }

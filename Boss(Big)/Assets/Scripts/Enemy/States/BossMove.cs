@@ -52,7 +52,7 @@ public class BossMove : BossState
         if (distance <= _stopDistance)
         {
             _desiredVelocity = Vector2.zero;
-            boss._stateMachine.ChangeState(new BossFire(boss));
+            boss._stateMachine.ChangeState(new BossIdle(boss, 0.15f)); 
         }
         else
         {
@@ -65,7 +65,7 @@ public class BossMove : BossState
     {
         if (yDistance > 2f && boss._collisionDataRetriever.OnGround)
         {
-            boss._stateMachine.ChangeState(new BossLeap(boss));
+            boss._stateMachine.ChangeState(new BossIdle(boss, 0.2f));
         }
     }
     

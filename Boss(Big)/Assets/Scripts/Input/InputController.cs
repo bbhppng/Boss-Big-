@@ -7,6 +7,8 @@ public abstract class InputController : ScriptableObject
     public abstract bool RetrieveAttackInput();
     public abstract bool RetrieveHeroPullInput();
     public abstract bool RetrieveHuzzPullInput();
+    public abstract bool RetrieveBlockInput();
+    public abstract bool RetrieveHealInput();
     public abstract bool RetrieveInteractInput();
     //public abstract bool RetrieveDashInput();
     //public abstract Vector2 RetrieveMousePositionInput();
