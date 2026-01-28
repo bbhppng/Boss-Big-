@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class Health : MonoBehaviour
 {
@@ -11,8 +12,13 @@ public class Health : MonoBehaviour
 
     public event Action<int, int> OnHealthChanged; 
     public event Action OnDeath;
+    
+    public event Action OnHealingStarted;
+    public event Action OnHealingEnded;
 
     private bool _canTakeDamage = true;
+    
+    private Coroutine _healCoroutine;
 
     private void Awake()
     {
@@ -48,6 +54,57 @@ public class Health : MonoBehaviour
         _health = Mathf.Clamp(_health, 0, _maxHealth);
 
         OnHealthChanged?.Invoke(_health, _maxHealth);
+    }
+    
+    public void HealGradually(int totalAmount, float duration)
+    {
+        if (Dead) return;
+        
+        if (_healCoroutine != null)
+        {
+            StopCoroutine(_healCoroutine);
+        }
+
+        _healCoroutine = StartCoroutine(HealOverTime(totalAmount, duration));
+    }
+
+    private IEnumerator HealOverTime(int totalAmount, float duration)
+    {
+        OnHealingStarted?.Invoke();
+        
+        float elapsed = 0f;
+        int startHealth = _health;
+        int targetHealth = Mathf.Min(_health + totalAmount, _maxHealth);
+
+        while (elapsed < duration && !Dead)
+        {
+            elapsed += Time.deltaTime;
+            float progress = elapsed / duration;
+
+            int newHealth = Mathf.RoundToInt(Mathf.Lerp(startHealth, targetHealth, progress));
+
+            if (newHealth != _health)
+            {
+                _health = newHealth;
+                OnHealthChanged?.Invoke(_health, _maxHealth);
+            }
+
+            yield return null;
+        }
+        _health = targetHealth;
+        OnHealthChanged?.Invoke(_health, _maxHealth);
+        OnHealingEnded?.Invoke();
+        _healCoroutine = null;
+    }
+    
+    public int GetCurrentHealth()
+    {
+        return _health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return _maxHealth;
     }
 
     private void Die()

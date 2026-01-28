@@ -167,8 +167,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1536753295
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1229858627709956937, guid: b75657df3f73fc1429dfb561d1989eed, type: 3}
@@ -266,7 +266,7 @@ MonoBehaviour:
   _obstacleLayers:
     serializedVersion: 2
     m_Bits: 5120
-  _cameraShakeIntensity: 5
+  _cameraShakeIntensity: 1
   _cameraShakeDuration: 1
 --- !u!95 &-5156210808597213637
 Animator:

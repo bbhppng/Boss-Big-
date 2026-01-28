@@ -30,6 +30,7 @@ public class Force : MonoBehaviour
     private Rigidbody2D _rb;
     private Controlls _controller;
     private CameraShake _cameraShake;
+    private AniamtionManager _animController;
 
     private bool _heroPullRequested;
     private bool _huzzPullRequested;
@@ -52,6 +53,7 @@ public class Force : MonoBehaviour
     {
         
         _controller = GetComponent<Controlls>();
+        _animController = GetComponent<AniamtionManager>();
         _rb = GetComponent<Rigidbody2D>();
         _forceLayer = LayerMask.NameToLayer("Force");
         _cameraShake = GetComponent<CameraShake>();
@@ -187,7 +189,12 @@ public class Force : MonoBehaviour
         _pulledRb.gameObject.layer = _forceLayer;
         _cameraShake.ShakeCamera( _cameraShakeIntensity);
         
+        
         _isPulling = true;
+        if (_animController != null && pulled == _rb)
+        {
+            _animController.SetPulling(true);
+        }
     }
 
     private void StartSnap()
@@ -202,7 +209,10 @@ public class Force : MonoBehaviour
         _cameraShake.ResetCamera();
         _pulledRb.gameObject.layer = _pulledOriginalLayer;
         _nextReadyTime = Time.time + _coolDown;
-
+        if (_animController != null)
+        {
+            _animController.SetPulling(false);
+        }
         _pulledRb = null;
         _pullToward = null;
         _snapTarget = null;

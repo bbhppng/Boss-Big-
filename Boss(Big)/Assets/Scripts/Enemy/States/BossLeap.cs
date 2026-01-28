@@ -13,13 +13,13 @@ public class BossLeap : BossState
     public override void Enter()
     {
         Debug.Log("Entering Leap State");
-        PlatformNode playerPlatform = boss._platformFinder.FindPlayerPlatform();
+        PlatformNode playerPlatform = boss._platformFinder.FindTargetPlatform(boss.GetCurrentTarget());
         PlatformNode bossPlatform = boss._platformFinder.FindClosestPlatform(boss.transform.position);
     
         if (playerPlatform == null || bossPlatform == null)
         {
             Debug.LogWarning("Platform not found, switching to Move state");
-            boss._stateMachine.ChangeState(new BossMove(boss));
+            // boss._stateMachine.ChangeState(new BossMove(boss));
             return;
         }
     
@@ -38,7 +38,7 @@ public class BossLeap : BossState
         if (distance < _minDistance)
         {
             Debug.Log("Target too close, switching to Move state");
-            boss._stateMachine.ChangeState(new BossMove(boss));
+            // boss._stateMachine.ChangeState(new BossMove(boss));
             return;
         }
     
@@ -59,7 +59,7 @@ public class BossLeap : BossState
                 boss._animator.SetBool("isJumping", false);
                 boss._animator.SetBool("isFalling", false);
                 boss.gameObject.layer = boss._originalLayer;
-                boss._stateMachine.ChangeState(new BossMove(boss));
+                // boss._stateMachine.ChangeState(new BossMove(boss));
                 return;
             }
             

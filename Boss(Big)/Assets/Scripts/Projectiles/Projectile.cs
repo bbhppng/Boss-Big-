@@ -112,11 +112,11 @@ public class Projectile : MonoBehaviour
             }
         }
         
-        if (IsInLayerMask(other.gameObject.layer, _obstacleLayers))
-        {
-            Debug.Log($"Projectile hit obstacle: {other.name}");
-            DestroyProjectile();
-        }
+        // if (IsInLayerMask(other.gameObject.layer, _obstacleLayers))
+        // {
+        //     Debug.Log($"Projectile hit obstacle: {other.name}");
+        //     DestroyProjectile();
+        // }
     }
 
     private void DestroyProjectile()

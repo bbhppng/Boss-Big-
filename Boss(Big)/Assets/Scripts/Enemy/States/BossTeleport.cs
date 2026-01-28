@@ -75,8 +75,8 @@ public class BossTeleport : BossState
         boss.transform.position = _teleportTarget;
         
         // Face player immediately
-        Vector2 directionToPlayer = boss._player.position - boss.transform.position;
-        if ((directionToPlayer.x > 0 && !boss._isFacingRight) || (directionToPlayer.x < 0 && boss._isFacingRight))
+        Vector2 directionToTarget = boss.GetCurrentTarget().position - boss.transform.position;
+        if ((directionToTarget.x > 0 && !boss._isFacingRight) || (directionToTarget.x < 0 && boss._isFacingRight))
         {
             boss.Flip();
         }
@@ -92,13 +92,14 @@ public class BossTeleport : BossState
 
     private Vector2 FindSmartTeleportPosition()
     {
+        Transform currentTarget = boss.GetCurrentTarget();
         // 1. Get the platform the player is currently on
-        PlatformNode playerPlatform = boss._platformFinder.FindPlayerPlatform();
-        if (playerPlatform == null) return Vector2.zero;
+        PlatformNode targetPlatform = boss._platformFinder.FindClosestPlatform(currentTarget.position);
+        if (targetPlatform == null) return Vector2.zero;
 
         // 2. Get all platforms and find ones within a "good" range
         // We don't want to be exactly on top of the player, but close enough to attack
-        Vector2 playerPos = playerPlatform.GetLandingPoint();
+        Vector2 targetLandingPos = targetPlatform.GetLandingPoint();
         
         // Use your platform list to find a tactical spot
         // We can look for platforms that are near the player but not the player's platform
@@ -107,23 +108,24 @@ public class BossTeleport : BossState
 
         // We'll try to find a platform that is 4-7 units away from the player
         // This keeps the boss mobile and annoying to hit
-        foreach (var platform in boss._platformFinder.GetComponent<FindTheBestPlatform>()._platforms)
+        var allPlatforms = boss._platformFinder._platforms;
+        foreach (var platform in allPlatforms)
         {
             if (platform == null) continue;
             
             Vector2 platPos = platform.GetLandingPoint();
-            float distToPlayer = Vector2.Distance(platPos, playerPos);
-            float distToCurrentBoss = Vector2.Distance(platPos, boss.transform.position);
+            float distToTarget = Vector2.Distance(platPos, targetLandingPos);
+            float distToBoss = Vector2.Distance(platPos, boss.transform.position);
 
             // Criteria: 
             // - Not too far from player (within 8 units)
             // - Not too close to current boss position (so we actually move)
             // - Not the exact same spot as the player (optional, depends on boss type)
-            if (distToPlayer < 8f && distToCurrentBoss > 3f)
+            if (distToTarget < 8f && distToBoss > 3f)
             {
-                if (distToPlayer < bestDist)
+                if (distToTarget < bestDist)
                 {
-                    bestDist = distToPlayer;
+                    bestDist = distToTarget;
                     bestTacticalPlatform = platform;
                 }
             }
@@ -135,7 +137,7 @@ public class BossTeleport : BossState
             return bestTacticalPlatform.GetLandingPoint();
         }
         
-        return playerPlatform.GetLandingPoint();
+        return targetPlatform.GetLandingPoint();
     }
 
     public override void CheckPlayerDistance(float distance, Vector2 direction) { }

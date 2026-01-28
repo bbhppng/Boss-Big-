@@ -5,7 +5,6 @@ using UnityEngine;
 public class FindTheBestPlatform : MonoBehaviour
 {
     [SerializeField] public List<PlatformNode> _platforms = new List<PlatformNode>();
-    [SerializeField] private Transform _player;
     [SerializeField] private float _maxJumpDistance = 3f;
     
     public void RegisterPlatform(PlatformNode node)
@@ -16,7 +15,7 @@ public class FindTheBestPlatform : MonoBehaviour
         }
     }
 
-    public PlatformNode FindPlayerPlatform()
+    public PlatformNode FindTargetPlatform(Transform target)
     {
         _platforms.RemoveAll(p => p == null);
         if (_platforms == null || _platforms.Count == 0) {
@@ -24,30 +23,22 @@ public class FindTheBestPlatform : MonoBehaviour
             return null;
         }
 
-        if (_player == null)
+        if (target == null)
         {
-            GameObject pObj = GameObject.FindGameObjectWithTag("Player");
-            if (pObj == null) {
-                Debug.LogError("Could not find GameObject with tag 'Player'!");
-                return null;
-            }
-            _player = pObj.transform;
+            Debug.LogError("Target transform passed to FindTargetPlatform is null!");
+            return null;
         }
+
         PlatformNode best = null;
         float bestDistance = Mathf.Infinity;
 
         foreach (PlatformNode p in _platforms)
         {
-            if (p == null) {
-                Debug.LogError("Found NULL platform in _platforms array!");
-                continue;
-            }
-    
+            // Safety check for null entries in the list
+            if (p == null) continue;
+
             Vector2 landing = p.GetLandingPoint();
-            Debug.Log($"Platform landing point: {landing}");
-    
-            float distance = Vector2.Distance(landing, _player.position);
-            Debug.Log($"Distance calculated: {distance}");
+            float distance = Vector2.Distance(landing, target.position);
     
             if (distance < bestDistance)
             {
@@ -60,6 +51,13 @@ public class FindTheBestPlatform : MonoBehaviour
     
     public PlatformNode FindClosestPlatform(Vector2 position)
     {
+        if (_platforms == null)
+        {
+            Debug.LogError("Platform list is NULL!");
+            return null;
+        }
+
+        _platforms.RemoveAll(p => p == null);
         PlatformNode best = null;
         float bestDistance = Mathf.Infinity;
 

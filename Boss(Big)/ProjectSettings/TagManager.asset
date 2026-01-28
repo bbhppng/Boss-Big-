@@ -23,7 +23,7 @@ TagManager:
   - Platform
   - PlayerProjectile
   - Projectile
-  - 
+  - Background
   - 
   - 
   - 
@@ -44,11 +44,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Player
-    uniqueID: 2623316657
+  - name: Background
+    uniqueID: 242642929
+    locked: 0
+  - name: Platform
+    uniqueID: 2166546645
+    locked: 0
+  - name: Boss
+    uniqueID: 609096071
     locked: 0
   - name: Huzz
     uniqueID: 3111309813
+    locked: 0
+  - name: Player
+    uniqueID: 2623316657
+    locked: 0
+  - name: Projectile
+    uniqueID: 2758214001
     locked: 0
   m_RenderingLayers:
   - Default
